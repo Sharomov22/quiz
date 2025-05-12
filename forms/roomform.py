@@ -4,6 +4,6 @@ from wtforms.validators import DataRequired
 
 
 class RoomForm(FlaskForm):
-    username = StringField('Отоброжаемое имя', validators=[DataRequired()])
+    username = StringField('Отображаемое имя', validators=[DataRequired()])
     password = PasswordField('Тэг комнаты', validators=[DataRequired()])
     submit = SubmitField('Подключиться')
