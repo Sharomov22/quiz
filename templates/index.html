@@ -2,7 +2,10 @@
 
 {% block content %}
 <h1>Главная</h1>
+<br>
+<h4>Присоединиться к викторине</h4>
 <form action="" method="post" novalidate>
+    {% if not current_user.is_authenticated %}
     <p>
         {{ form.username.label }}<br>
         {{ form.username(class="form-control") }}<br>
@@ -12,9 +15,10 @@
     </div>
     {% endfor %}
     </p>
+{% endif %}
     <p>
         {{ form.password.label }}<br>
-        {{ form.password(class="form-control", type="password") }}<br>
+        {{ form.password(class="form-control", type="password") }}
         {% for error in form.password.errors %}
     <div class="alert alert-danger" role="alert">
         {{ error }}
@@ -22,8 +26,11 @@
     {% endfor %}
     </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {% if current_user.is_authenticated %}
     <p>
-        <a href="login">Авторизация</a>
+        <a class="btn btn-primary" href="/new_quiz">Создать шаблон викторины</a>
+        <a class="btn btn-warning" href="/host_room">Создать комнату</a>
     </p>
+{% endif %}
 </form>
 {% endblock %}
