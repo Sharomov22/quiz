@@ -12,10 +12,16 @@
                 {{ error }}
             </p>
         {% endfor %}
+    <form>
+        <p>
+            <label
+            
+        </p>
+    </form>
     <div class="mb-3">
       <label for="question" class="form-label">Вопросы:</label>
       <div id="questionFields">
-        <div class="StringField">
+        <div class="questionField">
           <div class="row mb-2">
             <div class="col-8">
               <input type="text" class="form-control" name="question" />
@@ -23,7 +29,7 @@
             <div class="mb-3">
       <label for="answer" class="form-label">Варианты ответа:</label>
       <div id="answerFields">
-        <div class="StringField">
+        <div class="answerField">
           <div class="row mb-2">
             <div class="col-8">
               <input type="text" class="form-control" name="answer" />
@@ -36,7 +42,7 @@
       </div>
           </div>
       <div class="form-text">
-        <button onclick="javascript:return addQuestion()">Новый вопрос</button>
+        <button onclick="addQuestion()">Новый вопрос</button>
       </div>
     </div>
     <div class="row form-group">
@@ -47,12 +53,22 @@
     </form>
 <script>
       function addQuestion() {
-        const firstQuestion = document.querySelector('.phoneField');
+        const firstQuestion = document.querySelector('.questionField');
         const newQuestion = document.createElement('div');
         newQuestion.classList.add('StringField');
         newQuestion.innerHTML = firstQuestion.innerHTML;
         document.getElementById('questionFields').appendChild(newQuestion);
         document.querySelector('.questionField:last-child input').focus();
+        return false;
+      }
+    function addAnswer() {
+        const firstAnswer = document.querySelector('.questionField');
+        const newAnswer = document.createElement('div');
+        newAnswer.classList.add('StringField');
+        newAnswer.innerHTML = firstAnswer.innerHTML;
+        document.getElementById('answerFields').appendChild(newAnswer);
+        document.querySelector('.answerField:last-child input').focus();
+        return false;
       }
     </script>
 {% endblock %}
