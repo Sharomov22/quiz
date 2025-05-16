@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from data import db_session
-from forms.loginform import LoginForm
-from forms.roomform import RoomForm
-from forms.registerform import RegisterForm
+from forms.login_form import LoginForm
+from forms.room_form import RoomForm
+from forms.register_form import RegisterForm
+from forms.new_quiz_form import NewQuizForm
 from data.users import User
-from flask_login import login_user, LoginManager, logout_user, login_required
+from flask_login import login_user, LoginManager, logout_user, login_required, current_user
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -48,7 +49,7 @@ def main():
                                    form=form)
         return render_template('login.html', title='Авторизация', form=form)
 
-    @app.route('/register')
+    @app.route('/register', methods=['GET', 'POST'])
     def reqister():
         form = RegisterForm()
         if form.validate_on_submit():
@@ -61,6 +62,10 @@ def main():
                 return render_template('register.html', title='Регистрация',
                                        form=form,
                                        message="Такой пользователь уже есть")
+            if len(form.password) > 32 or len(form.login) > 32 or len(form.nickname) > 32:
+                return render_template('register.html', title='Регистрация',
+                                       form=form,
+                                       message="Превышен лимит в 32 символа на строку")
             user = User(
                 nickname=form.nickname.data,
                 login=form.login.data,
@@ -70,6 +75,20 @@ def main():
             db_sess.commit()
             return redirect('/login')
         return render_template('register.html', title='Регистрация', form=form)
+
+    @app.route('/new_quiz', methods=['GET', 'POST'])
+    @login_required
+    def new_quiz():
+        form = NewQuizForm()
+        if request.method == 'POST':
+            for number, type_ in zip(
+                    request.form.getlist('question'),
+                    request.form.getlist('answer')
+            ):
+                if number:
+                    print(f'Phone number: {number} ({type_})')
+        return render_template('new_quiz.html', title='Добавление викторины',
+                               form=form)
 
     app.run(port=8080, host='127.0.0.1')
 

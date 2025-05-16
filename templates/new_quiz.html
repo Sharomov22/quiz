@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">
+    <h1>Создание шаблона викторины</h1>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.title.label }}<br>
+        {{ form.title(class="form-control") }}<br>
+        {% for error in form.title.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    <div class="mb-3">
+      <label for="question" class="form-label">Вопросы:</label>
+      <div id="questionFields">
+        <div class="StringField">
+          <div class="row mb-2">
+            <div class="col-8">
+              <input type="text" class="form-control" name="question" />
+            </div>
+            <div class="mb-3">
+      <label for="answer" class="form-label">Варианты ответа:</label>
+      <div id="answerFields">
+        <div class="StringField">
+          <div class="row mb-2">
+            <div class="col-8">
+              <input type="text" class="form-control" name="answer" />
+            </div>
+          </div>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+          </div>
+      <div class="form-text">
+        <button onclick="javascript:return addQuestion()">Новый вопрос</button>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-3">
+        <input type="submit" class="form-control" value="Submit" />
+      </div>
+    </div>
+    </form>
+<script>
+      function addQuestion() {
+        const firstQuestion = document.querySelector('.phoneField');
+        const newQuestion = document.createElement('div');
+        newQuestion.classList.add('StringField');
+        newQuestion.innerHTML = firstQuestion.innerHTML;
+        document.getElementById('questionFields').appendChild(newQuestion);
+        document.querySelector('.questionField:last-child input').focus();
+      }
+    </script>
+{% endblock %}
