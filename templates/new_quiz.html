@@ -1,73 +1,78 @@
 {% extends "base.html" %}
+{% import 'macros.html' as macros %}
 
 {% block content %}
-<form action="" method="post">
-    <h1>Создание шаблона викторины</h1>
+<h1>Шаблон викторины</h1><br>
+<form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    <p>
-        {{ form.title.label }}<br>
-        {{ form.title(class="form-control") }}<br>
-        {% for error in form.title.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    <form>
-        <p>
-            <label
-            
-        </p>
-    </form>
-    <div class="mb-3">
-      <label for="question" class="form-label">Вопросы:</label>
-      <div id="questionFields">
-        <div class="questionField">
-          <div class="row mb-2">
-            <div class="col-8">
-              <input type="text" class="form-control" name="question" />
-            </div>
+    <div class="mb-4">
+        {{ macros.quiz(form.title, true, true, "Название викторины") }}
+        </div>
+    <div class="mb-8">
+          <label for="questionFields" class="form-label">Вопросы:</label>
+          <div id="questionFields">
+              {% for question in form.content.entries %}
+            <div class="questionField">
+                <div class="row mb-2">
+                    <div class="col-4">
+                    {{ macros.quiz(question.form.question, false, false, "Текст вопроса") }}
+                    </div>
+        <div class="ml-3">
             <div class="mb-3">
-      <label for="answer" class="form-label">Варианты ответа:</label>
-      <div id="answerFields">
+        <label for="answerFields" class="form-label">Варианты ответа:</label>
+        <div id="answerFields">
+            {% for answer in question.form.answer %}
         <div class="answerField">
           <div class="row mb-2">
-            <div class="col-8">
-              <input type="text" class="form-control" name="answer" />
+            <div class="col-">
+                {% if answer == question.form.answer[0] %}
+              {{ macros.quiz(answer, false, false, "Правильный ответ") }}
+                {% else %}
+              {{ macros.quiz(answer, false, false, "Ложный ответ") }}
+                {% endif %}
             </div>
           </div>
         </div>
+            {% endfor %}
       </div>
           </div>
+       </div>
         </div>
+        </div>
+          {% endfor %}
       </div>
-          </div>
+        <div class="mb-3">
       <div class="form-text">
-        <button onclick="addQuestion()">Новый вопрос</button>
+        <button type="button" onclick="addQuestion()">Добавить вопрос</button>
       </div>
+        </div>
     </div>
     <div class="row form-group">
       <div class="col-3">
-        <input type="submit" class="form-control" value="Submit" />
+        <input type="submit" class="form-control" value="Сохранить" />
       </div>
     </div>
     </form>
+{% if message %}
+    <div class="alert alert-warning" role="alert"> {{ message }}</div>
+{% endif %}
 <script>
       function addQuestion() {
         const firstQuestion = document.querySelector('.questionField');
         const newQuestion = document.createElement('div');
-        newQuestion.classList.add('StringField');
+        newQuestion.classList.add('questionField');
         newQuestion.innerHTML = firstQuestion.innerHTML;
+        const newIndex = document.querySelectorAll('.questionField').length;
+        const question = newQuestion.querySelector('#content-0-question');
+        question.id = 'content-${newIndex}-question';
+        question.name = question.id;
+        question.value = '';
+        const answer = newQuestion.querySelector('#content-0-answer');
+        answer.id = 'content-${newIndex}-answer';
+        answer.name = answer.id;
+        answer.value = ['', '', '', ''];
         document.getElementById('questionFields').appendChild(newQuestion);
         document.querySelector('.questionField:last-child input').focus();
-        return false;
-      }
-    function addAnswer() {
-        const firstAnswer = document.querySelector('.questionField');
-        const newAnswer = document.createElement('div');
-        newAnswer.classList.add('StringField');
-        newAnswer.innerHTML = firstAnswer.innerHTML;
-        document.getElementById('answerFields').appendChild(newAnswer);
-        document.querySelector('.answerField:last-child input').focus();
         return false;
       }
     </script>

@@ -12,7 +12,7 @@
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Викторины</a>
+        <a class="navbar-brand" href="/index">На главную</a>
         {% if current_user.is_authenticated %}
     <a class="navbar-brand" href="/logout">Выйти из {{ current_user.login }}</a>
 {% else %}
