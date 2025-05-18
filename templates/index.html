@@ -31,6 +31,19 @@
         <a class="btn btn-primary" href="/new_quiz">Создать шаблон викторины</a>
         <a class="btn btn-warning" href="/host_room">Создать комнату</a>
     </p>
+    {% for item in templates%}
+    <div class="col-md6 border rounded">
+        <h2>{{item.title}}</h2>
+    <div>
+        <a href="/quiz/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/quiz_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+    </div>
+{% endfor %}
 {% endif %}
 </form>
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% import 'macros.html' as macros %}
+
+{% block content %}
+<h1>Настройки комнаты</h1><br>
+<form action="" method="post" >
+    {{ form.hidden_tag() }}
+    <div class="mt-8">
+        <button type="button" onclick="switchPassword">Добавить/убрать пароль</button><br>
+    </div>
+    <div class="mb-8">
+        {{ form.template.label }}
+        {{ form.template(class="form-control") }}<br>
+    </div>
+    <div id="password">
+        <div class="mb-4" hidden>
+            {{ macros.quiz(form.password, true, false, "Пароль для входа") }}
+        </div>
+    </div>
+    <div class="col-3 mb-4">
+            {{ macros.quiz(form.only_authorized, true, false, "") }}
+        </div>
+    <div id="assessment">
+        <p>Шкала оценки от 2 до 5(минимум баллов, по возрастающей снизу вверх)</p>
+    <div class="col-2 mb-4">
+        {% for grade in form.assessment.entries %}
+            {{ macros.quiz(grade, false, false, "") }}
+        {% endfor %}
+        </div>
+    </div>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {% if message %}
+    <div class="alert alert-warning" role="alert"> {{ message }}</div>
+    {% endif %}
+</form>
+<script>
+    function switchPassword() {
+    document.getElementById('password').hidden = false;
+    document.getElementById('password').value = '';
+    return false;
+    }
+</script>
+{% endblock %}

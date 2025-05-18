@@ -57,23 +57,14 @@
     <div class="alert alert-warning" role="alert"> {{ message }}</div>
 {% endif %}
 <script>
-      function addQuestion() {
+    function addQuestion() {
+        const questionFields = document.getElementById('questionFields');
         const firstQuestion = document.querySelector('.questionField');
+        const newIndex = questionFields.querySelectorAll('.questionField').length;
         const newQuestion = document.createElement('div');
         newQuestion.classList.add('questionField');
-        newQuestion.innerHTML = firstQuestion.innerHTML;
-        const newIndex = document.querySelectorAll('.questionField').length;
-        const question = newQuestion.querySelector('#content-0-question');
-        question.id = 'content-${newIndex}-question';
-        question.name = question.id;
-        question.value = '';
-        const answer = newQuestion.querySelector('#content-0-answer');
-        answer.id = 'content-${newIndex}-answer';
-        answer.name = answer.id;
-        answer.value = ['', '', '', ''];
-        document.getElementById('questionFields').appendChild(newQuestion);
-        document.querySelector('.questionField:last-child input').focus();
-        return false;
-      }
-    </script>
+        newQuestion.innerHTML = firstQuestion.innerHTML.replace(/content-0/g, `content-${newIndex}`);
+        questionFields.appendChild(newQuestion);
+    }
+</script>
 {% endblock %}
